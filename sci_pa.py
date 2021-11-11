@@ -1,11 +1,9 @@
 import pandas as pd
 
-from balancer import Balancer
+from data_preparing.balancing import do_balance
 from naive_bayes import NaiveBayes
-from validation import Validation
 
-
-# df = pd.read_csv('papers_structed.csv')
+# df = pd.read_csv('src/papers_structed.csv')
 # df_balanced = Balancer().do_balance(df, 'class', [0, 1])
 # train_dataset_volumes = [200]  # , 100, 50, 25, 20, 15, 10, 5]
 
@@ -26,8 +24,8 @@ from validation import Validation
 # class_ = learning_model.classify({'магазин': 1, 'гора': 1, 'яблоко': 1, 'купи': 1, 'семь': 1, 'килограмм': 1, 'шоколадка': 1})
 # print(class_)
 
-df = pd.read_csv('papers_structed.csv')
-df_balanced = Balancer().do_balance(df, 'class', [0, 1])
+df = pd.read_csv('src/papers_structed.csv')
+df_balanced = do_balance(df, 'class', [0, 1])
 df_balanced_shuffled = df_balanced.sample(frac=1).reset_index(drop=True)
 train_dataset, test_dataset = df_balanced_shuffled[:200], df_balanced_shuffled[200:]
 learning_model = NaiveBayes()
@@ -53,8 +51,8 @@ for naive, true in zip(test_naive_ys, test_true_ys):
 accuracy = (rate['TP'] + rate['TN']) / len(test_naive_ys)
 precision = rate['TP'] / (rate['TP'] + rate['FP'])
 recall = rate['TP'] / (rate['TP'] + rate['FN'])
-print(accuracy)
-print(precision)
-print(recall)
+print('accuracy:\t', accuracy)
+print('precision:\t', precision)
+print('recall:\t\t', recall)
 
 
