@@ -15,8 +15,8 @@ class NaiveBayes:
         }
         self.terms = None
         self._funcs = {
-            'P(Q_k)': lambda k: (self.common_count[f'Q_{k}'] + self.alpha/10) /
-                                ((self.common_count['Q_1'] + self.common_count['Q_0']) * (1 + self.alpha/10)),
+            'P(Q_k)': lambda k: (self.common_count[f'Q_{k}'] + self.alpha) /
+                                ((self.common_count['Q_1'] + self.common_count['Q_0']) * (1 + self.alpha)),
             'P(x_j|Q_k)': lambda x_j, k: (self.alpha + self.terms[x_j][f'N_j{k}']) / (
                         self.alpha * self.M + self.N[f'_{k}'])
         }

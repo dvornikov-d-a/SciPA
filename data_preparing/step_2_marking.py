@@ -1,9 +1,7 @@
+import config as c
 from elasticsearch.serializer import JSONSerializer
 from copy import deepcopy
 from IPython.display import Markdown, display
-
-
-old_fields = ['id', 'title', 'paperAbstract', 'authors', 'journalName', 'fieldsOfStudy']
 
 
 # Красивый консольный вывод
@@ -13,19 +11,19 @@ def print_mod(string):
 
 def mark():
     # Чтение данных
-    with open('../src/1_papers_unique.json', 'r', encoding='utf-8') as f:
+    with open('../src/1_papers_unique.json', 'r', encoding=c.encoding) as f:
         papers_unique = JSONSerializer().loads(f.read())
 
     # Наполнение списка публикаций, хранящий только поля, используемые для обучения модели
     papers_cut = []
     for unique_paper in papers_unique:
         cut_paper = {}
-        for field in old_fields:
+        for field in c.old_fields:
             cut_paper[field] = deepcopy(unique_paper[field])
         papers_cut.append(cut_paper)
 
     # Разметка с записью результатов в файл
-    with open('../src/2_papers_marked.json', 'a+', encoding='utf-8') as f:
+    with open(c.rel_path_2_papers_marked_json, 'a+', encoding=c.encoding) as f:
         # Костыль: закомментировать в случае продолжения разметки
         f.write('[')
         for i, cut_paper in enumerate(papers_cut, start=1):
@@ -34,18 +32,18 @@ def mark():
             #     continue
             print_mod(f'**[{i}/{len(papers_cut)}]**')
             print_mod('**Заголовок**')
-            print(cut_paper['title'])
+            print(cut_paper[c.old_field_title])
             print_mod('**Аннотация**')
-            print(cut_paper['paperAbstract'])
+            print(cut_paper[c.old_field_abstract])
             print_mod('**Авторы**')
-            print(*[author['name'] for author in cut_paper['authors']], sep=', ', end='.\n')
+            print(*[author[c.old_field_authors_name] for author in cut_paper[c.old_field_authors]], sep=', ', end='.\n')
             print_mod('**Журнал/Конференция**')
-            print(cut_paper['journalName'])
+            print(cut_paper[c.old_field_journal])
             print_mod('**Предметная область**')
-            print(*cut_paper['fieldsOfStudy'], sep=', ', end='.\n')
+            print(*cut_paper[c.old_field_fields], sep=', ', end='.\n')
             print_mod('**Match...**')
             print('Ваша оценка (1 - подходит, 0 - не подходит): ', end='')
-            cut_paper['match'] = int(input())
+            cut_paper[c.old_field_class] = int(input())
             print('---------------------------------------------------------', end='\n\n')
             if i < len(papers_cut):
                 sep = ','
