@@ -2,6 +2,7 @@ from elasticsearch import JSONSerializer
 from data_preparing.step_2_marking import old_fields
 
 import nltk
+import config as c
 
 from nltk.corpus import wordnet
 from nltk.stem.wordnet import WordNetLemmatizer
@@ -278,10 +279,10 @@ def no_empties(word_list):
 
 
 def process_text():
-    with open('src/2_papers_marked.json', 'r', encoding='utf-8') as f:
+    with open(c.rel_path_2_papers_marked_json, 'r', encoding=c.encoding) as f:
         papers = JSONSerializer().loads(f.read())
     for paper in papers:
-        for field in ['title', 'paperAbstract']:
+        for field in [c.old_field_title, c.old_field_title]:
             word_list = tokenize(remove_marks(not_on_board(lowercase(paper[field]))))
             no_links_and_emails(word_list)
             post_tokenize(word_list)
@@ -292,19 +293,19 @@ def process_text():
             no_empties(word_list)
             paper[field] = word_list
         authors = []
-        for author in paper['authors']:
-            for author_id in author['ids']:
+        for author in paper[c.old_field_authors]:
+            for author_id in author[c.old_field_authors_ids]:
                 authors.append(author_id)
-        journal = remove_marks(not_on_board(lowercase(paper['journalName'])))
+        journal = remove_marks(not_on_board(lowercase(paper[c.old_field_journal])))
 
-        paper['id_'] = paper['id']
-        paper['words_'] = paper['title'] + paper['paperAbstract']
-        paper['authors_'] = authors
-        paper['journals_'] = [journal]
-        paper['fields_'] = paper['fieldsOfStudy']
-        paper['class_'] = paper['match']
+        paper[c.field_id] = paper[c.old_field_id]
+        paper[c.field_words] = paper[c.old_field_title] + paper[c.old_field_abstract]
+        paper[c.field_authors] = authors
+        paper[c.field_journals] = [journal]
+        paper[c.field_fields] = paper[c.old_field_fields]
+        paper[c.field_class_] = paper[c.old_field_class]
 
-        for old_field in old_fields + ['match']:
+        for old_field in c.old_fields + [c.old_field_class]:
             paper.pop(old_field)
-    with open('src/3_papers_marked_infinitive.json', 'w', encoding='utf-8') as f:
+    with open(rel_path_3_papers_marked_infinitive_json, 'w', encoding=c.encoding) as f:
         f.write(JSONSerializer().dumps(papers))
