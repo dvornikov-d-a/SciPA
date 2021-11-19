@@ -298,12 +298,12 @@ def process_text():
                 authors.append(author_id)
         journal = remove_marks(not_on_board(lowercase(paper[c.old_field_journal])))
 
-        paper[c.field_id] = paper[c.old_field_id]
-        paper[c.field_words] = paper[c.old_field_title] + paper[c.old_field_abstract]
-        paper[c.field_authors] = authors
-        paper[c.field_journals] = [journal]
-        paper[c.field_fields] = paper[c.old_field_fields]
-        paper[c.field_class] = paper[c.old_field_class]
+        paper[c.field_id_] = paper[c.old_field_id]
+        paper[c.field_words_] = paper[c.old_field_title] + paper[c.old_field_abstract]
+        paper[c.field_authors_] = authors
+        paper[c.field_journals_] = [journal]
+        paper[c.field_fields_] = paper[c.old_field_fields]
+        paper[c.field_class_] = paper[c.old_field_class]
 
         for old_field in c.old_fields + [c.old_field_class]:
             paper.pop(old_field)

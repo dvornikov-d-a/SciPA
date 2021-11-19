@@ -17,14 +17,14 @@ old_field_class = 'match'
 
 old_fields = (old_field_id, old_field_title, old_field_abstract, old_field_authors, old_field_journal, old_field_fields)
 
-field_id = 'id_'
-field_words = 'words_'
-field_authors = 'authors_'
-field_journals = 'journals_'
-field_fields = 'fields_'
-field_class = 'class_'
+field_id_ = 'id_'
+field_words_ = 'words_'
+field_authors_ = 'authors_'
+field_journals_ = 'journals_'
+field_fields_ = 'fields_'
+field_class_ = 'class_'
 
-set_names = (field_words, field_authors, field_journals, field_fields)
+set_names = (field_words_, field_authors_, field_journals_, field_fields_)
 
 data_prev = 'src/papers_'
 data_ext = '.csv'

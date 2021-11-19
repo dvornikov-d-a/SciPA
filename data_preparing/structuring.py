@@ -35,7 +35,7 @@ def structurize():
             counts = []
             for term in paper_sets[s]:
                 counts.append(str(paper[s].count(term)))
-            next_list = [paper[c.field_id]] + counts + [str(paper[c.field_class])]
+            next_list = [paper[c.field_id_]] + counts + [str(paper[c.field_class_])]
             next_string = ','.join(next_list) + '\n'
             with open(f'{c.data_prev}{s}{c.data_ext}', 'a', encoding=c.encoding) as f:
                 f.write(next_string)
