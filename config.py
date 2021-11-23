@@ -24,7 +24,13 @@ field_journals_ = 'journals_'
 field_fields_ = 'fields_'
 field_class_ = 'class_'
 
+classes = (0, 1)
+
 set_names = (field_words_, field_authors_, field_journals_, field_fields_)
 
 data_prev = 'src/papers_'
 data_ext = '.csv'
+
+shuffle_count = 5
+train_frac = 0.5
+k = 5

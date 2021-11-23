@@ -85,7 +85,6 @@ class NaiveBayes:
             for k in [1, 0]:
                 self.terms[term][f'P(x_j|{k})'] = self._funcs['P(x_j|Q_k)'](term, k)
 
-
     def fit(self, train_dataset):
         if self._fited:
             self._clear()
@@ -166,3 +165,5 @@ class NaiveBayes:
         for term, params in self.terms.items():
             for k in [1, 0]:
                 params[f'P(x_j|{k})'] = self._funcs['P(x_j|Q_k)'](term, k)
+
+
