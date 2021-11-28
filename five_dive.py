@@ -11,6 +11,9 @@ import pandas as pd
 
 dfs = dict(zip([s for s in c.set_names], [pd.read_csv(f'{c.data_prev}{s}.csv') for s in c.set_names]))
 # dfs_shuffled_balanced = do_balance(shuffle(dfs, random_state=1), c.field_class_, c.classes)
+ys = [y for y in list(dfs.values())[0][c.field_class_]]
+print(f'Доля правильных ответов в выдаче: {len([y for y in ys if y == 1]) / len(ys)}')
+print()
 
 border_indexes = (10, 9, 8, 7, 6, 5, 4, 3, 2)
 for border_index in border_indexes:
@@ -23,7 +26,7 @@ for border_index in border_indexes:
                                    [df.loc[border_index+1:len(df)-border_index]
                                    # .append(df.loc[math.floor(len(df)/2)+1:len(df)-border_index])
                                     for df in dfs.values()]))
-    naive_bayes = NaiveBayesMod()
+    naive_bayes = NaiveBayesMod(c.best_alpha, c.best_w)
     train_Xs, train_ys = dict([(type_, df.drop(columns=[c.field_id_, c.field_class_]))
                                for type_, df in train_dfs.items()]), \
                          list(train_dfs.values())[0][c.field_class_].to_list()
