@@ -19,10 +19,17 @@ def calc_metrics(classifier_ys, true_ys):
                 rate['FP'] += 1
             else:
                 rate['FN'] += 1
+
+    acc = (rate['TP'] + rate['TN']) / len(classifier_ys)
+    pre = rate['TP'] / (rate['TP'] + rate['FP']) if rate['TP'] != 0 else 0
+    rec = rate['TP'] / (rate['TP'] + rate['FN']) if rate['TP'] != 0 else 0
+    f = (2 * pre * rec) / (pre + rec) if pre + rec != 0 else 0
+
     return {
-        'accuracy': (rate['TP'] + rate['TN']) / len(classifier_ys),
-        'precision': rate['TP'] / (rate['TP'] + rate['FP']),
-        'recall': rate['TP'] / (rate['TP'] + rate['FN'])
+        'accuracy': acc,
+        'precision': pre,
+        'recall': rec,
+        'F': f
     }
 
 

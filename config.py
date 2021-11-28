@@ -34,3 +34,14 @@ data_ext = '.csv'
 shuffle_count = 5
 train_frac = 0.5
 k = 5
+
+best_params_ms_json = 'res/best_params_ms.json'
+best_params_txt = 'res/best_params.txt'
+
+max_vol_frac = 0.8
+min_vol = 5
+
+samples_count = 10
+
+vol_ms_json = 'res/vol_ms.json'
+
