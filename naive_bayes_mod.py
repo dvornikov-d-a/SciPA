@@ -64,6 +64,13 @@ class NaiveBayesMod:
     def classify(self, X):
         return self._classes[np.argmax([self._log_P(X, j, 10) for j in range(len(self._classes))])]
 
+    # Функция расчёта вероятностей принадлежности классам
+    def estimate(self, X):
+        estimations = {}
+        for class_index in range(len(self._classes)):
+            estimations[class_index] = self._log_P(X, class_index, 10)
+        return estimations
+
     # Функция расчёта логарифма вероятности принадлежности документа определённому классу
     # X: dict of pandas.Series
     def _log_P(self, X, class_j, base):
