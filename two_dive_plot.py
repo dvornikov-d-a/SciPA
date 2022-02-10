@@ -3,7 +3,7 @@ import json
 import config as c
 
 
-with open(c.five_dive_json, 'r', encoding=c.encoding) as f:
+with open(c.two_dive_json, 'r', encoding=c.encoding) as f:
     vol_ms = json.loads(f.read())
 
 xs = [int(vol) for vol in list(vol_ms.keys())]
@@ -26,4 +26,4 @@ for ms_name, metrics in ys.items():
         plt.plot(xs, points, colors[i], label=metric_name)
     ax.legend()
     # plt.show()
-    plt.savefig(f'res/two_dive_plots/whole_{ms_name}s.png')
+    plt.savefig(f'res/two_dive_plots/{ms_name}s.png')

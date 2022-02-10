@@ -63,5 +63,7 @@ vol_ms_json = 'res/vol_ms.json'
 
 threshold_train_size = 50
 
-five_dive_json = 'res/five_dive.json'
+two_dive_json = 'res/two_dive.json'
+
+
 

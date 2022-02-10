@@ -76,6 +76,6 @@ vol_ms = {}
 for train_vol, metric_list in vol_metric_list.items():
     vol_ms[train_vol] = calc_ms(metric_list)
 
-with open(c.five_dive_json, 'w', encoding=c.encoding) as f:
+with open(c.two_dive_json, 'w', encoding=c.encoding) as f:
     f.write(json.dumps(vol_ms))
 
