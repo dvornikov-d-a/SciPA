@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import json
 import config as c
 
@@ -25,5 +26,25 @@ for ms_name, metrics in ys.items():
     for i, (metric_name, points) in enumerate(metrics.items()):
         plt.plot(xs, points, colors[i], label=metric_name)
     ax.legend()
+
+    plt.ylim((0, 1))
+    #  Устанавливаем интервал основных и
+    #  вспомогательных делений:
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(10))
+    ax.xaxis.set_minor_locator(ticker.MultipleLocator(5))
+    ax.yaxis.set_major_locator(ticker.MultipleLocator(0.1))
+    ax.yaxis.set_minor_locator(ticker.MultipleLocator(0.05))
+
+    #  Добавляем линии основной сетки:
+    ax.grid(which='major',
+            color='k')
+
+    #  Включаем видимость вспомогательных делений:
+    ax.minorticks_on()
+    #  Теперь можем отдельно задавать внешний вид
+    #  вспомогательной сетки:
+    ax.grid(which='minor',
+            color='gray',
+            linestyle=':')
     # plt.show()
     plt.savefig(f'res/two_dive_plots/{ms_name}s.png')

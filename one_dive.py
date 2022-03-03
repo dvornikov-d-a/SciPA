@@ -1,6 +1,4 @@
 import config as c
-from data_preparing.shuffle_n_sort import shuffle
-from data_preparing.balancing import do_balance
 from data_preparing.dict_list_worker import to_list_of_dicts_of_series
 from naive_bayes_mod import NaiveBayesMod
 from metrics import calc_metrics, calc_ms
@@ -8,8 +6,6 @@ from data_preparing.shuffle_n_sort import shuffle
 from data_preparing.balancing import do_balance
 
 
-import math
-import time
 import pandas as pd
 import json
 
@@ -21,12 +17,10 @@ dfs = dict(zip([s for s in c.set_names], [pd.read_csv(f'{c.data_prev}{s}.csv') f
 
 
 for shuffle_number in range(c.dive_shuffle_count):
-    dfs_shuffled = shuffle(dfs, random_state=shuffle_number)
     dfs_balanced_shuffled = do_balance(shuffle(dfs, random_state=shuffle_number), c.field_class_, c.classes)
     # Размер обучающей выборки 4, 6, 8, ..., 100
     # Имитация итерационного процесса работы пользователя с системой
-    for train_df_half_size in range(1, c.threshold_train_size + 1):
-        train_df_size = 2 * train_df_half_size
+    for train_df_size in range(2, 2 * c.threshold_train_size + 2, 2):
         print()
         print('-----------------------------------------------')
         print(f'Перетасовка №{shuffle_number + 1}')
@@ -34,11 +28,10 @@ for shuffle_number in range(c.dive_shuffle_count):
         if train_df_size not in vol_metric_list.keys():
             vol_metric_list[train_df_size] = []
         train_dfs, test_dfs = dict(zip([type_ for type_ in dfs_balanced_shuffled.keys()],
-                                       [df.loc[:train_df_half_size - 1]
-                                       .append(df.loc[len(df) - train_df_half_size:])
+                                       [df.loc[:train_df_size - 1]
                                         for df in dfs_balanced_shuffled.values()])),\
                               dict(zip([type_ for type_ in dfs_balanced_shuffled.keys()],
-                                       [df.loc[train_df_half_size:len(df) - train_df_half_size - 1]
+                                       [df.loc[train_df_size:]
                                         for df in dfs_balanced_shuffled.values()]))
         naive_bayes = NaiveBayesMod(c.best_alpha, c.best_w)
         train_Xs, train_ys = dict([(type_, df.drop(columns=[c.field_id_, c.field_class_]))
@@ -64,9 +57,8 @@ for shuffle_number in range(c.dive_shuffle_count):
         scores = [naive_estimation[c.classes[1]] - naive_estimation[c.classes[0]]
                   for naive_estimation in naive_estimations]
         max_score = max(scores)
-        for i in range(train_df_half_size):
+        for i in range(train_df_size):
             scores.insert(0, max_score + 1)
-            scores.append(max_score + 1)
         scores_ = 'scores_'
         for s in c.set_names:
             dfs_balanced_shuffled[s][scores_] = scores
@@ -77,6 +69,6 @@ vol_ms = {}
 for train_vol, metric_list in vol_metric_list.items():
     vol_ms[train_vol] = calc_ms(metric_list)
 
-with open(c.two_dive_json, 'w', encoding=c.encoding) as f:
+with open(c.one_dive_json, 'w', encoding=c.encoding) as f:
     f.write(json.dumps(vol_ms))
 
