@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import json
 import config as c
 
 
-with open(c.vol_ms_json, 'r', encoding=c.encoding) as f:
+with open(c.vol_ms_json_null_coef, 'r', encoding=c.encoding) as f:
     vol_ms = json.loads(f.read())
 
 xs = [int(vol) for vol in list(vol_ms.keys())]
@@ -25,17 +26,59 @@ for ms_name, metrics in ys.items():
     for i, (metric_name, points) in enumerate(metrics.items()):
         plt.plot(xs, points, colors[i], label=metric_name)
     ax.legend()
-    # plt.show()
-    plt.savefig(f'res/plots/whole_{ms_name}s.png')
 
-# for max_vol_i in [int(vol / c.min_vol) for vol in (150, 100, 50, 25)]:
-#     for ms_name, metrics in ys.items():
-#         fig, ax = plt.subplots()
-#         plt.xlabel('train dataset volume')
-#         plt.ylabel(f'{ms_name} values')
-#         for i, (metric_name, points) in enumerate(metrics.items()):
-#             plt.plot(xs[-max_vol_i:], points[-max_vol_i:], colors[i], label=metric_name)
-#         ax.legend()
-#         # plt.show()
-#         plt.savefig(f'res/plots/max_vol_{max_vol_i * c.min_vol}_{ms_name}s.png')
+    plt.ylim((0, 1))
+    #  Устанавливаем интервал основных и
+    #  вспомогательных делений:
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(40))
+    ax.xaxis.set_minor_locator(ticker.MultipleLocator(20))
+    ax.yaxis.set_major_locator(ticker.MultipleLocator(0.1))
+    ax.yaxis.set_minor_locator(ticker.MultipleLocator(0.05))
+
+    #  Добавляем линии основной сетки:
+    ax.grid(which='major',
+            color='k')
+
+    #  Включаем видимость вспомогательных делений:
+    ax.minorticks_on()
+    #  Теперь можем отдельно задавать внешний вид
+    #  вспомогательной сетки:
+    ax.grid(which='minor',
+            color='gray',
+            linestyle=':')
+
+    # plt.show()
+    plt.savefig(f'res_null_coef/plots/whole_{ms_name}s.png')
+
+for max_vol_i in [int(vol / c.min_vol) for vol in (150, 100, 50, 25)]:
+    for ms_name, metrics in ys.items():
+        fig, ax = plt.subplots()
+        plt.xlabel('train dataset volume')
+        plt.ylabel(f'{ms_name} values')
+        for i, (metric_name, points) in enumerate(metrics.items()):
+            plt.plot(xs[-max_vol_i:], points[-max_vol_i:], colors[i], label=metric_name)
+        ax.legend()
+
+        plt.ylim((0, 1))
+        #  Устанавливаем интервал основных и
+        #  вспомогательных делений:
+        ax.xaxis.set_major_locator(ticker.MultipleLocator(10))
+        ax.xaxis.set_minor_locator(ticker.MultipleLocator(5))
+        ax.yaxis.set_major_locator(ticker.MultipleLocator(0.1))
+        ax.yaxis.set_minor_locator(ticker.MultipleLocator(0.05))
+
+        #  Добавляем линии основной сетки:
+        ax.grid(which='major',
+                color='k')
+
+        #  Включаем видимость вспомогательных делений:
+        ax.minorticks_on()
+        #  Теперь можем отдельно задавать внешний вид
+        #  вспомогательной сетки:
+        ax.grid(which='minor',
+                color='gray',
+                linestyle=':')
+
+        # plt.show()
+        plt.savefig(f'res_null_coef/plots/max_vol_{max_vol_i * c.min_vol}_{ms_name}s.png')
 

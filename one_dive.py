@@ -9,13 +9,16 @@ from data_preparing.balancing import do_balance
 import pandas as pd
 import json
 
+best_alpha = 1
+best_w = (1, 1, 0, 0)
+
 
 # Словарь: объём -> список всех результатов (метрик)
 vol_metric_list = {}
 
 dfs = dict(zip([s for s in c.set_names], [pd.read_csv(f'{c.data_prev}{s}.csv') for s in c.set_names]))
 
-
+# Очень много перемешиваний
 for shuffle_number in range(c.dive_shuffle_count):
     dfs_balanced_shuffled = do_balance(shuffle(dfs, random_state=shuffle_number), c.field_class_, c.classes)
     # Размер обучающей выборки 4, 6, 8, ..., 100
@@ -27,6 +30,8 @@ for shuffle_number in range(c.dive_shuffle_count):
         print(f'Объём обучающей выборки: {train_df_size}')
         if train_df_size not in vol_metric_list.keys():
             vol_metric_list[train_df_size] = []
+        # Обучающая выборка: равное количество документов из начала выдачи
+        # Тестовая выборка: все остальные документы (конец выдачи)
         train_dfs, test_dfs = dict(zip([type_ for type_ in dfs_balanced_shuffled.keys()],
                                        [df.loc[:train_df_size - 1]
                                         for df in dfs_balanced_shuffled.values()])),\
@@ -48,6 +53,7 @@ for shuffle_number in range(c.dive_shuffle_count):
         for metric_name, value in metrics.items():
             print(f'{metric_name}:\t{value}')
 
+        # Ранжирование выдачи заново (сортировка по убыванию)
         naive_estimations = [naive_bayes.estimate(X)
                              for id_, X in
                              zip(to_list_of_dicts_of_series(dict([(type_, df[c.field_id_])
@@ -65,10 +71,11 @@ for shuffle_number in range(c.dive_shuffle_count):
             dfs_balanced_shuffled[s].sort_values(scores_, ascending=False)
             dfs_balanced_shuffled[s].drop(scores_, axis=1, inplace=True)
 
+# Результаты по стохастической валидации по отложенной выборке
 vol_ms = {}
 for train_vol, metric_list in vol_metric_list.items():
     vol_ms[train_vol] = calc_ms(metric_list)
 
-with open(c.one_dive_json, 'w', encoding=c.encoding) as f:
+with open(c.one_dive_json_null_coef, 'w', encoding=c.encoding) as f:
     f.write(json.dumps(vol_ms))
 

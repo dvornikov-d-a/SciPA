@@ -8,14 +8,14 @@ class NaiveBayesMod:
     def __init__(self, alpha=1,
                  l_w=frozendict({c.field_words_: 1, c.field_authors_: 1, c.field_journals_: 1, c.field_fields_: 1}),
                  classes=c.classes):
-        # Гипер-параметр
+        # Гиперпараметр
         self._alpha = alpha
         # Типы признаков
         # (str, ...)
         self._ls = tuple(l_w.keys())
-        # Веса типов признаков, преобразованые из соотношения частей, суммарно равные 1
+        # Веса типов признаков, преобразованные из соотношения частей, не превышающие 1
         # (float, ...)
-        self._w = tuple([round(w / sum(l_w.values()), 2) for w in l_w.values()])
+        self._w = tuple([round(w / max(l_w.values()), 2) for w in l_w.values()])
         # Классы принадлежности документов
         self._classes = classes
         # Основные общие значения (для расчёта значений основной таблицы)

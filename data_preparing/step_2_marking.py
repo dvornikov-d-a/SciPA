@@ -8,7 +8,7 @@ from IPython.display import Markdown, display
 def print_mod(string):
     display(Markdown(string))
 
-
+# 494 публикации
 def mark():
     # Чтение данных
     with open('../src/1_papers_unique.json', 'r', encoding=c.encoding) as f:
@@ -51,3 +51,5 @@ def mark():
                 sep = ''
             f.write(f'{JSONSerializer().dumps(cut_paper)}{sep}')
         f.write(']')
+
+mark()

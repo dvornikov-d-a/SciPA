@@ -33,7 +33,7 @@ set_names = (field_words_, field_authors_, field_journals_, field_fields_)
 data_prev = 'src/papers_'
 data_ext = '.csv'
 
-shuffle_count = 5
+shuffle_count = 10
 train_frac = 0.5
 k = 5
 
@@ -48,7 +48,7 @@ best_alpha = alphas[2]
 # Варианты весов
 ws = (
     # Слова, авторы, журналы, области
-    frozendict(zip(set_names, (1, 1, 1, 1))),
+    frozendict(zip(set_names, (1, 1, 0, 0))),
     frozendict(zip(set_names, (1, 4, 3, 2)))
 )
 
@@ -60,6 +60,7 @@ min_vol = 5
 samples_count = 10
 
 vol_ms_json = 'res/vol_ms.json'
+vol_ms_json_null_coef = 'res_null_coef/vol_ms.json'
 
 threshold_train_size = 50
 
@@ -67,5 +68,12 @@ dive_shuffle_count = 100
 
 two_dive_json = 'res/two_dive.json'
 
+two_dive_json_another = 'res/two_dive_another.json'
+
+two_dive_json_last = 'res/two_dive_last.json'
+two_dive_json_last_null_coef = 'res_null_coef/two_dive_last.json'
+two_dive_json_last_mod_coef = 'res_mod_coef/two_dive_last.json'
+
 one_dive_json = 'res/one_dive.json'
+one_dive_json_null_coef = 'res_null_coef/one_dive.json'
 

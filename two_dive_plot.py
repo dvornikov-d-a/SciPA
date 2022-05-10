@@ -4,7 +4,7 @@ import json
 import config as c
 
 
-with open(c.two_dive_json, 'r', encoding=c.encoding) as f:
+with open(c.two_dive_json_last_null_coef, 'r', encoding=c.encoding) as f:
     vol_ms = json.loads(f.read())
 
 xs = [int(vol) for vol in list(vol_ms.keys())]
@@ -47,4 +47,4 @@ for ms_name, metrics in ys.items():
             color='gray',
             linestyle=':')
     # plt.show()
-    plt.savefig(f'res/two_dive_plots/{ms_name}s.png')
+    plt.savefig(f'res_mod_coef/two_dive_last_plots/{ms_name}s.png')
