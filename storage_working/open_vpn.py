@@ -139,4 +139,4 @@ class OpenVPN:
 
     def _ping(self):
         proc = subprocess.run(f'ping {self.ip_address}', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print(proc.stdout.decode('utf-8'))
+        return proc.stdout.decode('utf-8')

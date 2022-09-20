@@ -37,7 +37,6 @@ class ElasticSearch:
                         {"match": {"paperAbstract": "MRI"}},
                         {"match": {"paperAbstract": "cancer"}},
                         {"match": {"paperAbstract": "brain"}},
-                        # {"match": {"paperAbstract": "analysis"}}
                     ],
                     "filter": [
                         {"match": {"fieldsOfStudy": "Computer Science"}}
@@ -45,12 +44,10 @@ class ElasticSearch:
                 }
             }
         }
-        res = self.es.search_and_save(body=query,
-                                      index='papers',
-                                      _source=True,
-                                      size=10000)
+        res = self.es.search(body=query,
+                             index='papers',
+                             _source=True,
+                             size=10000)
         with open('../src/0_papers.json', 'w', encoding='utf-8') as f:
             f.write(JSONSerializer().dumps(data=[hit['_source'] for hit in res['hits']['hits']]))
-        total_count = self.es.count(query)['count']
-
-
+        # total_count = self.es.count(query)['count']

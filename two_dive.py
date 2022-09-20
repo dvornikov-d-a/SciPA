@@ -1,6 +1,4 @@
 import config as c
-from data_preparing.shuffle_n_sort import shuffle
-from data_preparing.balancing import do_balance
 from data_preparing.dict_list_worker import to_list_of_dicts_of_series
 from naive_bayes_mod import NaiveBayesMod
 from metrics import calc_metrics, calc_ms

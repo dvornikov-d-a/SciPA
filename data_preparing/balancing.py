@@ -9,7 +9,7 @@ def ratio(df, class_col, classes):
     return class_percents
 
 
-# Функция сотворения баланса двух классов
+# Функция установления баланса двух классов
 def do_balance(dfs, class_col, classes):
     class_percents = ratio(list(dfs.values())[0], class_col, classes)
     max_class = {'class': 0, 'percent': 0}

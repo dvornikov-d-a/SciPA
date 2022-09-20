@@ -307,5 +307,5 @@ def process_text():
 
         for old_field in c.old_fields + [c.old_field_class]:
             paper.pop(old_field)
-    with open(rel_path_3_papers_marked_infinitive_json, 'w', encoding=c.encoding) as f:
+    with open(c.rel_path_3_papers_marked_infinitive_json, 'w', encoding=c.encoding) as f:
         f.write(JSONSerializer().dumps(papers))

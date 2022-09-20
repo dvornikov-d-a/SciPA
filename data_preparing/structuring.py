@@ -1,4 +1,4 @@
-import config as c
+    import config as c
 from elasticsearch import JSONSerializer
 
 
